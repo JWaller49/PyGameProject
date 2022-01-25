@@ -55,6 +55,7 @@ class Player(pygame.sprite.Sprite):
     def stop(self):
         self.vel_x = 0
 
+
 class Bullet(pygame.sprite.Sprite):
 
     def __init__(self, coords: tuple):
@@ -75,6 +76,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.y -= self.vel_y
 
 # Create enemy class, scale enemy sprite
+
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -91,6 +93,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def update(self):
         self.rect.y += self.vel_y
+
 
 def main():
     pygame.init()
@@ -128,10 +131,12 @@ def main():
         lives = font.render("Lives: " + str(lives_value), True, (0, 0, 0))
         screen.blit(lives, (x, y))
 
-    # Sprite groups
+        # Sprite groups
+
     all_sprite_group = pygame.sprite.Group()
     background_group = pygame.sprite.Group()
     enemy_group = pygame.sprite.Group()
+    ability_group = pygame.sprite.Group()
 
     # Player and enemy creation
     player = Player()
@@ -166,20 +171,14 @@ def main():
         if pygame.key.get_pressed()[pygame.K_q]:
             bullet = Bullet(player.rect.midtop)
 
-            ability_sprites.add(bullet)
-            all_sprites.add(bullet)
+            ability_group.add(bullet)
+            all_sprite_group.add(bullet)
 
         # Restrict player to stay on screen
         if player.rect.right > WIDTH:
             player.rect.right = WIDTH
         if player.rect.left < 0:
             player.rect.left = 0
-
-    # --- Sprites
-
-        all_sprites = pygame.sprite.Group()
-        enemy_sprites = pygame.sprite.Group()
-        ability_sprites = pygame.sprite.Group()
 
 
     # --- Ability
@@ -191,10 +190,10 @@ def main():
 
 
 
-        for ability in ability_sprites:
+        for ability in ability_group:
             enemies_bullet_collided = pygame.sprite.spritecollide(
                 ability,
-                enemy_sprites,
+                enemy_group,
                 True)
 
             if bullet.rect.y < 0:
