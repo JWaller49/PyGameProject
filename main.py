@@ -1,5 +1,6 @@
 # James Waller
 # Orginal by did not have a name attached
+import time
 
 import pygame
 import random
@@ -42,14 +43,12 @@ class Player(pygame.sprite.Sprite):
     # Move left function
     def go_left(self):
         self.vel_x = -10
-        #self.image = pygame.image.load("Images/Braum.webp")
-        #self.image = pygame.transform.scale(self.image, (120, 150))
+
 
     # Move right function
     def go_right(self):
         self.vel_x = 10
-        #self.image = pygame.image.load("Images/Braum.webp")
-        #self.image = pygame.transform.scale(self.image, (54, 75))
+
 
     # Stop function
     def stop(self):
@@ -169,6 +168,7 @@ def main():
                     player.stop()
 
         if pygame.key.get_pressed()[pygame.K_q]:
+           if len(ability_group) < 1 and time.time():
             bullet = Bullet(player.rect.midtop)
 
             ability_group.add(bullet)
@@ -195,6 +195,11 @@ def main():
                 ability,
                 enemy_group,
                 True)
+
+            # If the bullet has struck some enemy
+            if len(enemies_bullet_collided) > 0:
+                bullet.kill()
+                score_value += 1
 
             if bullet.rect.y < 0:
                 bullet.kill()
